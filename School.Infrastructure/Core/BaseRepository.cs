@@ -1,31 +1,63 @@
-﻿
-using School.Domain.Repository;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using School.Domain.Repository;
+using School.Infrastructure.Context;
 
 namespace School.Infrastructure.Core
 {
     public abstract class BaseRepository<TEntity> : IRepositoryBase<TEntity> where TEntity : class
     {
+        private readonly SchoolContext context;
+        private readonly DbSet<TEntity> myDbSet;
+        public BaseRepository(SchoolContext context)
+        {
+            this.context = context;
+            this.myDbSet = this.context.Set<TEntity>();
+
+        }
+        public virtual bool Exists(Expression<Func<TEntity, bool>> filter)
+        {
+            return this.myDbSet.Any(filter);
+        }
         public virtual List<TEntity> GetEntities()
         {
-            throw new System.NotImplementedException();
+            return this.myDbSet.ToList();
         }
-
-        public virtual TEntity GetEntityById(int Id)
+        public virtual TEntity GetEntity(int id)
         {
-            throw new System.NotImplementedException();
+            return this.myDbSet.Find(id);
         }
-
-        public virtual void Save(TEntity entity)
+        public virtual void Remove(TEntity entity)
         {
-            throw new System.NotImplementedException();
-        }
+            this.myDbSet.Remove(entity);
 
+        }
+        public virtual void Remove(TEntity[] entities)
+        {
+            this.myDbSet.RemoveRange(entities);
+        }
+        public virtual void Add(TEntity entity)
+        {
+            this.myDbSet.Add(entity);
+        }
+        public virtual void Add(TEntity[] entities)
+        {
+            this.myDbSet.AddRange(entities);
+        }
         public virtual void Update(TEntity entity)
         {
-            throw new System.NotImplementedException();
+            this.myDbSet.Update(entity);
         }
-
-       // public abstract void miMetodo()
+        public virtual void Update(TEntity[] entities)
+        {
+            this.myDbSet.UpdateRange(entities);
+        }
+        public virtual void SaveChanges()
+        {
+            this.context.SaveChanges();
+        }
     }
 }
