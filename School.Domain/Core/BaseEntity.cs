@@ -8,10 +8,10 @@ namespace School.Domain.Core
     {
         public BaseEntity()
         {
-            this.CreateDate = DateTime.Now;
+            this.CreationDate = DateTime.Now;
             this.Deleted = false;
         }
-        public DateTime CreateDate { get; set; }
+        public DateTime CreationDate { get; set; }
         public int CreationUser { get; set; }
         public DateTime? ModifyDate { get; set; }
         public int? UserMod { get; set; }
