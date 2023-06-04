@@ -38,6 +38,31 @@ namespace School.Infrastructure.Repositories
             base.SaveChanges();
         }
 
+        public DepartmentModel GetDepartmentById(int id)
+        {
+            DepartmentModel departmentModel = new DepartmentModel();
+
+
+            try
+            {
+                Department department = this.GetEntity(id);
+
+                departmentModel.Administrator = department.Administrator;
+                departmentModel.DepartmentId = department.DepartmentID;
+                departmentModel.StartDate = department.StartDate;
+                departmentModel.Name = department.Name;
+               
+
+            }
+            catch (Exception ex)
+            {
+
+                this.logger.LogError("Error obteniendo el department", ex.ToString());
+            }
+
+            return departmentModel;
+        }
+
         public List<DepartmentModel> GetDepartments()
         {
             

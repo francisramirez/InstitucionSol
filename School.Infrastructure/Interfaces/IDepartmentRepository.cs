@@ -8,5 +8,6 @@ namespace School.Infrastructure.Interfaces
     public interface  IDepartmentRepository : IRepositoryBase<Department>
     {
         List<DepartmentModel> GetDepartments();
+        DepartmentModel GetDepartmentById(int id);
     }
 }
