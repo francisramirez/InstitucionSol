@@ -37,7 +37,51 @@ namespace School.Infrastructure.Repositories
             base.Add(entity);
             base.SaveChanges();
         }
+             
+        public override void Update(Department entity)
+        {
+            try
+            {
+                Department departmentToUpdate = this.GetEntity(entity.DepartmentID);
 
+                departmentToUpdate.DepartmentID = entity.DepartmentID;
+                departmentToUpdate.ModifyDate = entity.ModifyDate;
+                departmentToUpdate.Name = entity.Name;
+                departmentToUpdate.StartDate = entity.StartDate;
+                departmentToUpdate.UserMod = entity.UserMod;
+                departmentToUpdate.Administrator = entity.Administrator;
+                departmentToUpdate.Budget = entity.Budget;
+
+                this.context.Departments.Update(departmentToUpdate);
+                this.context.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+
+                this.logger.LogError("Error actualizando el departamento", ex.ToString());
+            }
+        }
+        public override void Remove(Department entity)
+        {
+            try
+            {
+                Department departmentToRemove= this.GetEntity(entity.DepartmentID);
+
+                departmentToRemove.Deleted = entity.Deleted;
+                departmentToRemove.DeletedDate = entity.DeletedDate;
+                departmentToRemove.UserDeleted = entity.UserDeleted;
+
+                this.context.Departments.Update(departmentToRemove);
+                this.context.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+
+                this.logger.LogError("Error eliminando el departamento", ex.ToString());
+            }
+        }
         public DepartmentModel GetDepartmentById(int id)
         {
             DepartmentModel departmentModel = new DepartmentModel();
@@ -51,7 +95,7 @@ namespace School.Infrastructure.Repositories
                 departmentModel.DepartmentId = department.DepartmentID;
                 departmentModel.StartDate = department.StartDate;
                 departmentModel.Name = department.Name;
-               
+
 
             }
             catch (Exception ex)
@@ -62,15 +106,16 @@ namespace School.Infrastructure.Repositories
 
             return departmentModel;
         }
-
         public List<DepartmentModel> GetDepartments()
         {
-            
+
             List<DepartmentModel> departments = new List<DepartmentModel>();
 
             try
             {
-                departments = this.context.Departments.Select(de => new DepartmentModel()
+                departments = this.context.Departments
+                                 .Where(cd => !cd.Deleted)
+                                 .Select(de => new DepartmentModel()
                 {
                     Administrator = de.Administrator,
                     DepartmentId = de.DepartmentID,
@@ -86,5 +131,6 @@ namespace School.Infrastructure.Repositories
 
             return departments;
         }
+
     }
 }

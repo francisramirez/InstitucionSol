@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using School.Application.Dtos.Department;
 using School.Domain.Entities;
 using School.Infrastructure.Interfaces;
 
@@ -14,7 +15,7 @@ namespace InstitucionSol.Api.Controllers
         {
             this.departmentRepository = departmentRepository;
         }
-        
+
         [HttpGet]
         public IActionResult Get()
         {
@@ -22,7 +23,7 @@ namespace InstitucionSol.Api.Controllers
             return Ok(departments);
         }
 
-       
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -30,24 +31,59 @@ namespace InstitucionSol.Api.Controllers
             return Ok(depto);
         }
 
-       
+
         [HttpPost("Save")]
-        public void Post([FromBody] Department department)
+        public IActionResult Post([FromBody] DepartmentAddDto departmentAdd)
         {
 
+            this.departmentRepository.Add(new Department()
+            {
+                Administrator = departmentAdd.Administrator,
+                Budget = departmentAdd.Budget,
+                CreationDate = departmentAdd.ChangeDate,
+                CreationUser = departmentAdd.ChangeUser,
+                Name = departmentAdd.Name,
+                StartDate = departmentAdd.StartDate
+            });
+
+            return Ok();
         }
 
-      
+
         [HttpPost("Update")]
-        public void Put([FromBody] Department department)
+        public IActionResult Put([FromBody] DepartmentUpdateDto departmentUpdate)
         {
 
+
+            Department departmentToUpdate = new Department()
+            {
+                Administrator = departmentUpdate.Administrator,
+                Budget = departmentUpdate.Budget,
+                ModifyDate = departmentUpdate.ChangeDate,
+                UserMod = departmentUpdate.ChangeUser,
+                Name = departmentUpdate.Name,
+                StartDate = departmentUpdate.StartDate,
+                DepartmentID = departmentUpdate.DepartmentID,
+            };
+
+            this.departmentRepository.Update(departmentToUpdate);
+            return Ok();
         }
 
         
         [HttpPost("Remove")]
-        public void Delete([FromBody] Department department)
+        public IActionResult Delete([FromBody] DepartmentRemoveDto departmentRemoveDto)
         {
+            Department departmentToDelete = new Department()
+            {
+                Deleted = departmentRemoveDto.Eliminado,
+                DeletedDate = departmentRemoveDto.ChangeDate, 
+                DepartmentID= departmentRemoveDto.DepartmentID, 
+                UserDeleted= departmentRemoveDto.ChangeUser
+            };
+
+            this.departmentRepository.Remove(departmentToDelete);
+            return Ok();
         }
     }
 }
