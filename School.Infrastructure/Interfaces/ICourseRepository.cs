@@ -9,5 +9,6 @@ namespace School.Infrastructure.Interfaces
     {
         List<CursoModel> GetCoursesByDepartment(int departmentId);
         List<CursoModel> GetCourses();
+        CursoModel GetCourse(int courseId);
     }
 }

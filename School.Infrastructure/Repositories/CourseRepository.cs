@@ -8,7 +8,7 @@ using School.Infrastructure.Core;
 using School.Infrastructure.Exceptions;
 using School.Infrastructure.Interfaces;
 using School.Infrastructure.Models;
-
+using School.Infrastructure.Extentions;
 namespace School.Infrastructure.Repositories
 {
     public class CourseRepository : BaseRepository<Course>, ICourseRepository
@@ -22,7 +22,6 @@ namespace School.Infrastructure.Repositories
             this.logger = logger;
             this.context = context;
         }
-        
         public override void Add(Course entity)
         {
 
@@ -142,6 +141,29 @@ namespace School.Infrastructure.Repositories
             }
 
             return cursos;
+        }
+
+        public CursoModel GetCourse(int courseId)
+        {
+            CursoModel cursoModel = new CursoModel();
+            try
+            {
+                cursoModel = base.GetEntity(courseId).ConvertCourseEntityToModel();
+
+                //cursoModel = new CursoModel()
+                //{
+                //    CourseId = course.CourseID,
+                //    Credits = course.Credits,
+                //    DepartmentID = course.DepartmentID,
+                //    Title = course.Title
+                //};
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError("Error obteniendo el curso", ex.ToString());
+            }
+
+            return cursoModel;
         }
     }
 }
