@@ -146,25 +146,26 @@ namespace School.Infrastructure.Repositories
         public CursoModel GetCourse(int courseId)
         {
             CursoModel cursoModel = new CursoModel();
+
+            
             try
             {
+                if (!base.Exists(cu => cu.CourseID == courseId))
+                    throw new Exception("Curso no existe..");
+
                 cursoModel = base.GetEntity(courseId).ConvertCourseEntityToModel();
 
-                //cursoModel = new CursoModel()
-                //{
-                //    CourseId = course.CourseID,
-                //    Credits = course.Credits,
-                //    DepartmentID = course.DepartmentID,
-                //    Title = course.Title
-                //};
+
             }
             catch (Exception ex)
             {
                 this.logger.LogError("Error obteniendo el curso", ex.ToString());
+                throw new CourseException("Curso no existe..");
             }
 
             return cursoModel;
         }
+
     }
 }
 

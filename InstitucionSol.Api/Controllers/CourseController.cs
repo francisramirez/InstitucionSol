@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using School.Domain.Entities;
+using School.Infrastructure.Exceptions;
 using School.Infrastructure.Interfaces;
+using School.Infrastructure.Models;
 
 namespace InstitucionSol.Api.Controllers
 {
@@ -21,11 +23,22 @@ namespace InstitucionSol.Api.Controllers
             return Ok(courses);
         }
 
-        // GET api/<CourseController>/5
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+       
+        [HttpGet("GetCourse")]
+        public IActionResult Get([FromQuery] int id)
         {
-            var course = this.courseRepository.GetCourse(id);
+            var course = new CursoModel();
+
+
+            try
+            {
+                course = this.courseRepository.GetCourse(id);
+            }
+            catch (CourseException ex)
+            {
+                var result = new { Success = false, ErrorMessage = ex.Message };
+                return BadRequest(result);
+            }
             return Ok(course);
         }
        

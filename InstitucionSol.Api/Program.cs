@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using School.Application.Contract;
+using School.Application.Service;
 using School.Infrastructure.Context;
 using School.Infrastructure.Interfaces;
 using School.Infrastructure.Repositories;
@@ -25,6 +27,8 @@ builder.Services.AddTransient<ICourseRepository, CourseRepository>();
 
 
 // Registros de app services //
+
+builder.Services.AddTransient<IDepartamentService, DepartamentService>();
 
 
 

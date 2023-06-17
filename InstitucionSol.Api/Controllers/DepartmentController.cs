@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using School.Application.Contract;
 using School.Application.Dtos.Department;
 using School.Domain.Entities;
 using School.Infrastructure.Interfaces;
@@ -9,17 +10,18 @@ namespace InstitucionSol.Api.Controllers
     [ApiController]
     public class DepartmentController : ControllerBase
     {
-        private readonly IDepartmentRepository departmentRepository;
+       
+        private readonly IDepartamentService departamentService;
 
-        public DepartmentController(IDepartmentRepository departmentRepository)
+        public DepartmentController(IDepartamentService departamentService)
         {
-            this.departmentRepository = departmentRepository;
+            this.departamentService = departamentService;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var departments = this.departmentRepository.GetDepartments();
+            var departments = this.departamentService.Get();
             return Ok(departments);
         }
 
@@ -27,7 +29,7 @@ namespace InstitucionSol.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var depto = this.departmentRepository.GetDepartmentById(id);
+            var depto = this.departamentService.GetById(id);
             return Ok(depto);
         }
 
@@ -36,17 +38,9 @@ namespace InstitucionSol.Api.Controllers
         public IActionResult Post([FromBody] DepartmentAddDto departmentAdd)
         {
 
-            this.departmentRepository.Add(new Department()
-            {
-                Administrator = departmentAdd.Administrator,
-                Budget = departmentAdd.Budget,
-                CreationDate = departmentAdd.ChangeDate,
-                CreationUser = departmentAdd.ChangeUser,
-                Name = departmentAdd.Name,
-                StartDate = departmentAdd.StartDate
-            });
+            var result = this.departamentService.Save(departmentAdd);
 
-            return Ok();
+            return Ok(result);
         }
 
 
@@ -55,35 +49,18 @@ namespace InstitucionSol.Api.Controllers
         {
 
 
-            Department departmentToUpdate = new Department()
-            {
-                Administrator = departmentUpdate.Administrator,
-                Budget = departmentUpdate.Budget,
-                ModifyDate = departmentUpdate.ChangeDate,
-                UserMod = departmentUpdate.ChangeUser,
-                Name = departmentUpdate.Name,
-                StartDate = departmentUpdate.StartDate,
-                DepartmentID = departmentUpdate.DepartmentID,
-            };
-
-            this.departmentRepository.Update(departmentToUpdate);
-            return Ok();
+            var result = this.departamentService.Update(departmentUpdate);
+             
+            return Ok(result);
         }
 
         
         [HttpPost("Remove")]
         public IActionResult Delete([FromBody] DepartmentRemoveDto departmentRemoveDto)
         {
-            Department departmentToDelete = new Department()
-            {
-                Deleted = departmentRemoveDto.Eliminado,
-                DeletedDate = departmentRemoveDto.ChangeDate, 
-                DepartmentID= departmentRemoveDto.DepartmentID, 
-                UserDeleted= departmentRemoveDto.ChangeUser
-            };
-
-            this.departmentRepository.Remove(departmentToDelete);
-            return Ok();
+            
+            var result = this.departamentService.Remove(departmentRemoveDto);
+            return Ok(result);
         }
     }
 }
