@@ -152,7 +152,23 @@ namespace School.Application.Service
 
         public ServiceResult Update(DepartmentUpdateDto model)
         {
-            throw new NotImplementedException();
+            ServiceResult result = new ServiceResult();
+
+
+
+            this.departmentRepository.Update(new Department()
+            {
+                Administrator = model.Administrator,
+                Budget = model.Budget.Value,
+                CreationDate = model.ChangeDate,
+                CreationUser = model.ChangeUser,
+                Name = model.Name,
+                StartDate = model.StartDate.Value, 
+                DepartmentID= model.DepartmentID
+            });
+
+
+            return result;
         }
     }
 }

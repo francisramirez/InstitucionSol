@@ -11,6 +11,7 @@ using School.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace School.Infrastructure.Repositories
 {
@@ -43,14 +44,30 @@ namespace School.Infrastructure.Repositories
             try
             {
                 Department departmentToUpdate = this.GetEntity(entity.DepartmentID);
+                              
+                
+                entity.GetType().GetProperties().ToList().ForEach(cd => {
+                    
+                    var propertyValue = cd.GetValue(entity);
+                   
+                    departmentToUpdate.GetType()
+                                      .GetProperty(cd.Name)
+                                      .SetValue(departmentToUpdate, 
+                                                propertyValue,
+                                                null);
+                });
 
-                departmentToUpdate.DepartmentID = entity.DepartmentID;
-                departmentToUpdate.ModifyDate = entity.ModifyDate;
-                departmentToUpdate.Name = entity.Name;
-                departmentToUpdate.StartDate = entity.StartDate;
-                departmentToUpdate.UserMod = entity.UserMod;
-                departmentToUpdate.Administrator = entity.Administrator;
-                departmentToUpdate.Budget = entity.Budget;
+
+                //departmentToUpdate.DepartmentID = entity.DepartmentID;
+                //departmentToUpdate.ModifyDate = entity.ModifyDate;
+                //departmentToUpdate.Name = entity.Name;
+                //departmentToUpdate.StartDate = entity.StartDate;
+                //departmentToUpdate.UserMod = entity.UserMod;
+                //departmentToUpdate.Administrator = entity.Administrator;
+                //departmentToUpdate.Budget = entity.Budget;
+
+
+                
 
                 this.context.Departments.Update(departmentToUpdate);
                 this.context.SaveChanges();
