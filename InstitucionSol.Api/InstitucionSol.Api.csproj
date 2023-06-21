@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\School.Application\School.Application.csproj" />
+    <ProjectReference Include="..\School.IOC\School.IOC.csproj" />
   </ItemGroup>
 
 </Project>

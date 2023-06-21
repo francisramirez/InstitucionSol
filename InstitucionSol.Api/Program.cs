@@ -2,9 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using School.Application.Contract;
 using School.Application.Service;
 using School.Infrastructure.Context;
-using School.Infrastructure.Interfaces;
-using School.Infrastructure.Repositories;
-using System.Runtime.CompilerServices;
+using School.IOC.Dependencies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,19 +17,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<SchoolContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolContext")));
 
 
-// Repositories //
-builder.Services.AddTransient<IDepartmentRepository, DepartmentRepository>();
-
-builder.Services.AddTransient<ICourseRepository, CourseRepository>();
-
-
-
-// Registros de app services //
-
-builder.Services.AddTransient<IDepartamentService, DepartamentService>();
-
-builder.Services.AddTransient<ICourseService, CourseService>();
-
+//my Dependencies
+builder.Services.AddCourseDependency();
+builder.Services.AddDepartmentDependency();
 
 var app = builder.Build();
 
