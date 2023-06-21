@@ -40,12 +40,27 @@ namespace School.Infrastructure.Repositories
 
                 if (courseToUpdate is null)
                     throw new CourseException("El curso no existe.");
-                
-                courseToUpdate.Credits = entity.Credits;
-                courseToUpdate.DepartmentID = entity.DepartmentID;
-                courseToUpdate.ModifyDate = DateTime.Now;
-                courseToUpdate.Title = entity.Title;
-                courseToUpdate.UserMod = entity.UserMod;
+
+
+                entity.GetType().GetProperties().ToList().ForEach(cd =>
+                {
+
+                    var propertyValue = cd.GetValue(entity);
+
+                    courseToUpdate.GetType()
+                                      .GetProperty(cd.Name)
+                                      .SetValue(courseToUpdate,
+                                                propertyValue,
+                                                null);
+                });
+
+
+
+                //courseToUpdate.Credits = entity.Credits;
+                //courseToUpdate.DepartmentID = entity.DepartmentID;
+                //courseToUpdate.ModifyDate = DateTime.Now;
+                //courseToUpdate.Title = entity.Title;
+                //courseToUpdate.UserMod = entity.UserMod;
 
                 base.Update(courseToUpdate);
                 base.SaveChanges();
