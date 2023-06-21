@@ -30,8 +30,7 @@ builder.Services.AddTransient<ICourseRepository, CourseRepository>();
 
 builder.Services.AddTransient<IDepartamentService, DepartamentService>();
 
-
-
+builder.Services.AddTransient<ICourseService, CourseService>();
 
 
 var app = builder.Build();

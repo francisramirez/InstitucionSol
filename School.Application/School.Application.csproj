@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\Course\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\School.Infrastructure\School.Infrastructure.csproj" />
   </ItemGroup>
 

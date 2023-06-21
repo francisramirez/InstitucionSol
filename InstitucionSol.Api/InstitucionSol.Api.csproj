@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\School.Application\School.Application.csproj" />
-    <ProjectReference Include="..\School.Infrastructure\School.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
