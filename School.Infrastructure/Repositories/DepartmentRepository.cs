@@ -66,8 +66,6 @@ namespace School.Infrastructure.Repositories
                 departmentToUpdate.Budget = entity.Budget;
 
 
-
-
                 this.context.Departments.Update(departmentToUpdate);
                 this.context.SaveChanges();
 

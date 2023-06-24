@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using Microsoft.Extensions.Logging;
 using School.Application.Contract;
 using School.Application.Core;
@@ -6,11 +6,10 @@ using School.Application.Dtos.Department;
 using School.Domain.Entities;
 using School.Infrastructure.Exceptions;
 using School.Infrastructure.Interfaces;
-using System;
-
+using School.Application.Extentions;
 namespace School.Application.Service
 {
-   
+
     public class DepartamentService : IDepartamentService
     {
         private readonly IDepartmentRepository departmentRepository;
@@ -75,7 +74,30 @@ namespace School.Application.Service
 
         public ServiceResult Remove(DepartmentRemoveDto model)
         {
-            throw new NotImplementedException();
+            ServiceResult result = new ServiceResult();
+
+            try
+            {
+                this.departmentRepository.Remove(new Department()
+                {
+                    DepartmentID = model.DepartmentID,
+                    Deleted = model.Deleted, 
+                    DeletedDate= model.ChangeDate, 
+                    UserDeleted= model.ChangeUser
+                });
+
+                result.Message = "Departamento eliminado correctamente.";
+
+            }
+            catch (Exception ex)
+            {
+
+                result.Success = false;
+                result.Message = "Error guardando el departamento.";
+                this.logger.LogError($"{result.Message}", ex.ToString());
+            }
+
+            return result;
         }
 
         public ServiceResult Save(DepartmentAddDto model)
@@ -120,15 +142,10 @@ namespace School.Application.Service
 
             try
             {
-                this.departmentRepository.Add(new Department()
-                {
-                    Administrator = model.Administrator,
-                    Budget = model.Budget.Value,
-                    CreationDate = model.ChangeDate,
-                    CreationUser = model.ChangeUser,
-                    Name = model.Name,
-                    StartDate = model.StartDate.Value
-                });
+
+                var department = model.ConvertDtoAddToEntity();
+
+                this.departmentRepository.Add(department);
 
                 result.Message = "Departamento agregado correctamente.";
             }
@@ -153,19 +170,58 @@ namespace School.Application.Service
         public ServiceResult Update(DepartmentUpdateDto model)
         {
             ServiceResult result = new ServiceResult();
-
-
-
-            this.departmentRepository.Update(new Department()
+           
+            if (string.IsNullOrEmpty(model.Name))
             {
-                Administrator = model.Administrator,
-                Budget = model.Budget.Value,
-                CreationDate = model.ChangeDate,
-                CreationUser = model.ChangeUser,
-                Name = model.Name,
-                StartDate = model.StartDate.Value, 
-                DepartmentID= model.DepartmentID
-            });
+                result.Message = "El nombre del departamento es requerido.";
+                result.Success = false;
+                return result;
+            }
+
+            if (model.Name.Length > 50)
+            {
+                result.Message = "El nombre del departamento tiene la logitud invalida.";
+                result.Success = false;
+                return result;
+            }
+
+            if (!model.Budget.HasValue)
+            {
+                result.Message = "El presupuesto es requerido.";
+                result.Success = false;
+                return result;
+            }
+
+            if (model.Budget <= 0)
+            {
+                result.Message = "El presupuesto no puede ser cero.";
+                result.Success = false;
+                return result;
+            }
+
+            if (!model.StartDate.HasValue)
+            {
+                result.Message = "El start date es requerido";
+                result.Success = false;
+                return result;
+            }
+
+            try
+            {
+                var deparment = model.ConvertDtoUpdateToEntity();
+
+                this.departmentRepository.Update(deparment);
+
+                result.Message = "Departamento actualizado correctamente.";
+            }
+            catch (Exception ex)
+            {
+
+                result.Success = false;
+                result.Message = "Error guardando el departamento.";
+                this.logger.LogError($"{result.Message}", ex.ToString());
+            }
+
 
 
             return result;
