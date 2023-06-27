@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using School.Application.Contract;
 using School.Application.Dtos.Department;
-using School.Domain.Entities;
-using School.Infrastructure.Interfaces;
 
 namespace InstitucionSol.Api.Controllers
 {

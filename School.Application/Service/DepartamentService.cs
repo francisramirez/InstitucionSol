@@ -104,41 +104,8 @@ namespace School.Application.Service
         {
             ServiceResult result = new ServiceResult();
 
-            if (string.IsNullOrEmpty(model.Name))
-            {
-                result.Message = "El nombre del departamento es requerido.";
-                result.Success = false;
+            if (!model.IsValidDeparment().Success)
                 return result;
-            }
-
-            if (model.Name.Length > 50)
-            {
-                result.Message = "El nombre del departamento tiene la logitud invalida.";
-                result.Success = false;
-                return result;
-            }
-
-            if (!model.Budget.HasValue)
-            {
-                result.Message = "El presupuesto es requerido.";
-                result.Success = false;
-                return result;
-            }
-
-            if (model.Budget <= 0)
-            {
-                result.Message = "El presupuesto no puede ser cero.";
-                result.Success = false;
-                return result;
-            }
-
-            if (!model.StartDate.HasValue)
-            {
-                result.Message = "El start date es requerido";
-                result.Success = false;
-                return result;
-            }
-
 
             try
             {
@@ -170,41 +137,9 @@ namespace School.Application.Service
         public ServiceResult Update(DepartmentUpdateDto model)
         {
             ServiceResult result = new ServiceResult();
-           
-            if (string.IsNullOrEmpty(model.Name))
-            {
-                result.Message = "El nombre del departamento es requerido.";
-                result.Success = false;
-                return result;
-            }
 
-            if (model.Name.Length > 50)
-            {
-                result.Message = "El nombre del departamento tiene la logitud invalida.";
-                result.Success = false;
+            if (!model.IsValidDeparment().Success)
                 return result;
-            }
-
-            if (!model.Budget.HasValue)
-            {
-                result.Message = "El presupuesto es requerido.";
-                result.Success = false;
-                return result;
-            }
-
-            if (model.Budget <= 0)
-            {
-                result.Message = "El presupuesto no puede ser cero.";
-                result.Success = false;
-                return result;
-            }
-
-            if (!model.StartDate.HasValue)
-            {
-                result.Message = "El start date es requerido";
-                result.Success = false;
-                return result;
-            }
 
             try
             {

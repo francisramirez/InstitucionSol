@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using School.Application.Contract;
 using School.Application.Dtos.Course;
-using School.Domain.Entities;
-using School.Infrastructure.Exceptions;
-using School.Infrastructure.Interfaces;
-using School.Infrastructure.Models;
 
 namespace InstitucionSol.Api.Controllers
 {
@@ -56,9 +52,9 @@ namespace InstitucionSol.Api.Controllers
         }
 
         [HttpPost("Update")]
-        public IActionResult Put([FromBody] Course course)
+        public IActionResult Put([FromBody] CourseUpdateDto courseUpdateDto)
         {
-            //this.courseRepository.Update(course);
+            this.courseService.Update(courseUpdateDto);
             return Ok();
         }
 

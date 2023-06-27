@@ -3,9 +3,9 @@ using System;
 
 namespace School.Infrastructure.Exceptions
 {
-    public class CourseException : Exception
+    public class CourseDataException : Exception
     {
-        public CourseException(string message) : base(message)
+        public CourseDataException(string message) : base(message)
         {
 
         }

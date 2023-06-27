@@ -26,7 +26,7 @@ namespace School.Infrastructure.Repositories
         {
 
             if (this.Exists(cd => cd.Title == entity.Title))
-                throw new CourseException("El curso ya existe.");
+                throw new CourseDataException("El curso ya existe.");
 
             base.Add(entity);
             base.SaveChanges();
@@ -39,36 +39,38 @@ namespace School.Infrastructure.Repositories
                 Course courseToUpdate = base.GetEntity(entity.CourseID);
 
                 if (courseToUpdate is null)
-                    throw new CourseException("El curso no existe.");
+                    throw new CourseDataException("El curso no existe.");
 
 
-                entity.GetType().GetProperties().ToList().ForEach(cd =>
-                {
+                //entity.GetType().GetProperties().ToList().ForEach(cd =>
+                //{
 
-                    var propertyValue = cd.GetValue(entity);
+                //    var propertyValue = cd.GetValue(entity);
 
-                    courseToUpdate.GetType()
-                                      .GetProperty(cd.Name)
-                                      .SetValue(courseToUpdate,
-                                                propertyValue,
-                                                null);
-                });
+                //    courseToUpdate.GetType()
+                //                      .GetProperty(cd.Name)
+                //                      .SetValue(courseToUpdate,
+                //                                propertyValue,
+                //                                null);
+                //});
 
 
-
-                //courseToUpdate.Credits = entity.Credits;
-                //courseToUpdate.DepartmentID = entity.DepartmentID;
-                //courseToUpdate.ModifyDate = DateTime.Now;
-                //courseToUpdate.Title = entity.Title;
-                //courseToUpdate.UserMod = entity.UserMod;
+                courseToUpdate.Credits = entity.Credits;
+                courseToUpdate.DepartmentID = entity.DepartmentID;
+                courseToUpdate.ModifyDate = DateTime.Now;
+                courseToUpdate.Title = entity.Title;
+                courseToUpdate.UserMod = entity.UserMod;
 
                 base.Update(courseToUpdate);
                 base.SaveChanges();
                 
             }
+            catch (CourseDataException cdex) 
+            {
+                throw new CourseDataException(cdex.Message); 
+            } 
             catch (Exception ex) 
             {
-
                 this.logger.LogError("Ocurrió un error actualizando el curso", ex.ToString());
             }
         }
@@ -79,7 +81,7 @@ namespace School.Infrastructure.Repositories
                 Course courseToRemove = base.GetEntity(entity.CourseID);
 
                 if (courseToRemove is null)
-                    throw new CourseException("El curso no existe.");
+                    throw new CourseDataException("El curso no existe.");
 
 
                 courseToRemove.Deleted = true;
@@ -175,7 +177,7 @@ namespace School.Infrastructure.Repositories
             catch (Exception ex)
             {
                 this.logger.LogError("Error obteniendo el curso", ex.ToString());
-                throw new CourseException("Curso no existe..");
+                throw new CourseDataException("Curso no existe..");
             }
 
             return cursoModel;
