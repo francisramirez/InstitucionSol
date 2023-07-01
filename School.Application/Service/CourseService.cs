@@ -22,7 +22,7 @@ namespace School.Application.Service
         public ServiceResult Get()
         {
             ServiceResult result = new ServiceResult();
-
+            
             try
             {
                 var courses = this.courseRepository.GetCourses();

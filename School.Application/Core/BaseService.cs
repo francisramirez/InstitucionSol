@@ -9,5 +9,7 @@ namespace School.Application.Core
         public abstract ServiceResult Update(TModelMod model);
         public abstract ServiceResult Remove(TModelRem model);
 
+        
+
     }
 }
