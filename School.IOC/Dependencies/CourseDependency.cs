@@ -13,6 +13,7 @@ namespace School.IOC.Dependencies
     {
         public static void AddCourseDependency(this IServiceCollection services) 
         {
+           
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddTransient<ICourseService, CourseService>();
 

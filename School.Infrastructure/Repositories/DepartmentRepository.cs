@@ -42,6 +42,8 @@ namespace School.Infrastructure.Repositories
         {
             try
             {
+
+                
                 Department departmentToUpdate = this.GetEntity(entity.DepartmentID);
 
 

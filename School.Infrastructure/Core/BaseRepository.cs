@@ -33,6 +33,7 @@ namespace School.Infrastructure.Core
         public virtual void Remove(TEntity entity)
         {
             this.myDbSet.Remove(entity);
+           
 
         }
         public virtual void Remove(TEntity[] entities)
