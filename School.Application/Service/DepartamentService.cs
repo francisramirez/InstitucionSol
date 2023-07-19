@@ -104,13 +104,18 @@ namespace School.Application.Service
         {
             ServiceResult result = new ServiceResult();
 
-            if (!model.IsValidDeparment().Success)
+            result = model.IsValidDeparment();
+
+            if (!result.Success)
                 return result;
 
             try
             {
-
+                model.ChangeDate = DateTime.Now;
+                model.ChangeUser = 1;
                 var department = model.ConvertDtoAddToEntity();
+
+               
 
                 this.departmentRepository.Add(department);
 
@@ -138,11 +143,15 @@ namespace School.Application.Service
         {
             ServiceResult result = new ServiceResult();
 
-            if (!model.IsValidDeparment().Success)
+            result = model.IsValidDeparment();
+
+            if (!result.Success)
                 return result;
 
             try
             {
+                model.ChangeDate = DateTime.Now;
+                model.ChangeUser = 1;
                 var deparment = model.ConvertDtoUpdateToEntity();
 
                 this.departmentRepository.Update(deparment);

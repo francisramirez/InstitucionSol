@@ -111,6 +111,7 @@ namespace School.Infrastructure.Repositories
                 departmentModel.DepartmentId = department.DepartmentID;
                 departmentModel.StartDate = department.StartDate;
                 departmentModel.Name = department.Name;
+                departmentModel.Budget = department.Budget;
 
 
             }
@@ -136,7 +137,8 @@ namespace School.Infrastructure.Repositories
                     Administrator = de.Administrator,
                     DepartmentId = de.DepartmentID,
                     Name = de.Name,
-                    StartDate = de.StartDate
+                    StartDate = de.StartDate, 
+                    Budget= de.Budget
                 }).ToList();
             }
             catch (Exception ex)
