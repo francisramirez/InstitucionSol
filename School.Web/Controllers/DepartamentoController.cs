@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using School.Application.Dtos.Course;
+using School.Application.Dtos.Department;
 using School.Web.Models.Reponses;
+using System.Text;
 
 namespace School.Web.Controllers
 {
@@ -112,10 +115,45 @@ namespace School.Web.Controllers
         // POST: DepartamentoController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(DepartmentUpdateDto departmentUpdateDto)
         {
             try
             {
+                var departmentUpdateResponse = new DepartmentUpdateResponse();
+
+                using (var httpClient = new HttpClient(this.httpClientHandler))
+                {
+
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(departmentUpdateDto), Encoding.UTF8, "application/json");
+
+                    using (var response = httpClient.PostAsync("http://localhost:5037/api/Department/Update", content).Result)
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string apiResponse = response.Content.ReadAsStringAsync().Result;
+
+                            var result = JsonConvert.DeserializeObject<DepartmentUpdateResponse>(apiResponse);
+
+                            if (!result.success)
+                            {
+                                ViewBag.Message = result.message;
+                                return View();
+                            }
+
+                        }
+                        else
+                        {
+                            ViewBag.Message = "Error actualizando el departamento";
+                            return View();
+                        }
+
+
+                       
+                    }
+                }
+
+
+
                 return RedirectToAction(nameof(Index));
             }
             catch
