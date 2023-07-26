@@ -63,13 +63,13 @@ namespace School.Infrastructure.Repositories
 
                 base.Update(courseToUpdate);
                 base.SaveChanges();
-                
+
             }
-            catch (CourseDataException cdex) 
+            catch (CourseDataException cdex)
             {
-                throw new CourseDataException(cdex.Message); 
-            } 
-            catch (Exception ex) 
+                throw new CourseDataException(cdex.Message);
+            }
+            catch (Exception ex)
             {
                 this.logger.LogError("Ocurrió un error actualizando el curso", ex.ToString());
             }
@@ -108,7 +108,7 @@ namespace School.Infrastructure.Repositories
 
                 cursos = (from cu in base.GetEntities()
                           join de in context.Departments.ToList() on cu.DepartmentID equals de.DepartmentID
-                          where cu.DepartmentID == departmentId 
+                          where cu.DepartmentID == departmentId
                            && !cu.Deleted
                           select new CursoModel()
                           {
@@ -136,7 +136,7 @@ namespace School.Infrastructure.Repositories
 
             try
             {
-             
+
                 cursos = (from cu in base.GetEntities()
                           join de in context.Departments.ToList() on cu.DepartmentID equals de.DepartmentID
                           where !cu.Deleted
@@ -164,13 +164,28 @@ namespace School.Infrastructure.Repositories
         {
             CursoModel cursoModel = new CursoModel();
 
-            
+
             try
             {
                 if (!base.Exists(cu => cu.CourseID == courseId))
                     throw new Exception("Curso no existe..");
 
-                cursoModel = base.GetEntity(courseId).ConvertCourseEntityToModel();
+
+                cursoModel = (from co in this.context.Course
+                             join de in this.context.Departments on co.DepartmentID equals de.DepartmentID
+                             where co.CourseID == courseId
+                             select new CursoModel()
+                             {
+                                 CourseId = co.CourseID,
+                                 Credits = co.Credits,
+                                 DeparmentName = de.Name,
+                                 DepartmentID = de.DepartmentID,
+                                 Title = co.Title
+
+                             }).FirstOrDefault();
+
+
+              
 
 
             }

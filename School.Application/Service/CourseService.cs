@@ -44,6 +44,7 @@ namespace School.Application.Service
 
             try
             {
+                
                 var course = this.courseRepository.GetCourse(id);
                 result.Data = course;
             }
@@ -97,6 +98,9 @@ namespace School.Application.Service
             try
             {
                 Course course = model.ConvertToCourseUpdateDtoToCourseEntiy();
+
+                course.ModifyDate = DateTime.Now;
+                course.UserMod = 1;
 
                 this.courseRepository.Update(course);
 
