@@ -139,6 +139,7 @@ namespace School.Web.Controllers
                                 ViewBag.Message = result.message;
                                 return View();
                             }
+                            return RedirectToAction(nameof(Index));
 
                         }
                         else
@@ -152,9 +153,6 @@ namespace School.Web.Controllers
                     }
                 }
 
-
-
-                return RedirectToAction(nameof(Index));
             }
             catch
             {

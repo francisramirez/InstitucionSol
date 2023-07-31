@@ -17,9 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "School.Test", "School.Test\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "School.Web", "School.Web\School.Web.csproj", "{0D257096-CC72-4190-88AC-DFCFADE43EDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "School.WebApp", "School.WebApp\School.WebApp.csproj", "{0E4BFB34-A93B-48B0-93ED-270CAF6AC01C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "School.WebApp", "School.WebApp\School.WebApp.csproj", "{0E4BFB34-A93B-48B0-93ED-270CAF6AC01C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "School.Lambda", "School.Lambda\School.Lambda.csproj", "{D4C4312B-CE99-4F6C-829D-F4648A11BF4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "School.SPA", "School.SPA\School.SPA.csproj", "{497F4C9E-2D05-42B5-B8D3-00B8B9F5F729}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{D4C4312B-CE99-4F6C-829D-F4648A11BF4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4C4312B-CE99-4F6C-829D-F4648A11BF4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4C4312B-CE99-4F6C-829D-F4648A11BF4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{497F4C9E-2D05-42B5-B8D3-00B8B9F5F729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{497F4C9E-2D05-42B5-B8D3-00B8B9F5F729}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{497F4C9E-2D05-42B5-B8D3-00B8B9F5F729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{497F4C9E-2D05-42B5-B8D3-00B8B9F5F729}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

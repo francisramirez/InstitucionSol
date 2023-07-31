@@ -16,6 +16,8 @@ builder.Services.AddDbContext<SchoolContext>(options => options.UseSqlServer(bui
 builder.Services.AddCourseDependency();
 builder.Services.AddDepartmentDependency();
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
