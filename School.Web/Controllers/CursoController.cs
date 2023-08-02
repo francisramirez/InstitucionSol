@@ -2,23 +2,25 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using School.Web.Models.Reponses;
+using School.Web.Services;
 
 namespace School.Web.Controllers
 {
     public class CursoController : Controller
     {
-        private readonly IHttpClientFactory httpClientFactory;
-        private readonly IConfiguration configuration;
-        private readonly ILogger<CursoController> logger;
-        private string baseUrl = string.Empty;
-        public CursoController(IHttpClientFactory httpClientFactory,
-                               IConfiguration configuration,
-                               ILogger<CursoController> logger)
+        private readonly ICourseApiService courseApiService;
+
+        //private readonly IHttpClientFactory httpClientFactory;
+        //private readonly IConfiguration configuration;
+        //private readonly ILogger<CursoController> logger;
+        //private string baseUrl = string.Empty;
+        public CursoController(ICourseApiService courseApiService )
         {
-            this.httpClientFactory = httpClientFactory;
-            this.configuration = configuration;
-            this.logger = logger;
-            this.baseUrl = this.configuration["ApiConfig:baseUrl"];
+            //this.httpClientFactory = httpClientFactory;
+            //this.configuration = configuration;
+            //this.logger = logger;
+            //this.baseUrl = this.configuration["ApiConfig:baseUrl"];
+            this.courseApiService = courseApiService;
         }
         // GET: CursoController
         public ActionResult Index()
@@ -26,31 +28,33 @@ namespace School.Web.Controllers
             CourseListReponse courseReponse = new CourseListReponse();
 
 
-            try
-            {
-                using (var httpClient = this.httpClientFactory.CreateClient())
-                {
-                    using (var response = httpClient.GetAsync($"{this.baseUrl}/Course/GetCourses").Result)
-                    {
-                        if (response.IsSuccessStatusCode)
-                        {
-                            string apiResponse = response.Content.ReadAsStringAsync().Result;
-                            courseReponse = JsonConvert.DeserializeObject<CourseListReponse>(apiResponse);
-                        }
-                        else
-                        {
-                            // realizar x logica //
-                            ViewBag.Message = courseReponse.message;
-                            return View();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError("Error obteniendo los cursos", ex.ToString());
-                return View();
-            }
+            courseReponse = this.courseApiService.GetCourses();
+
+            //try
+            //{
+            //    using (var httpClient = this.httpClientFactory.CreateClient())
+            //    {
+            //        using (var response = httpClient.GetAsync($"{this.baseUrl}/Course/GetCourses").Result)
+            //        {
+            //            if (response.IsSuccessStatusCode)
+            //            {
+            //                string apiResponse = response.Content.ReadAsStringAsync().Result;
+            //                courseReponse = JsonConvert.DeserializeObject<CourseListReponse>(apiResponse);
+            //            }
+            //            else
+            //            {
+            //                // realizar x logica //
+            //                ViewBag.Message = courseReponse.message;
+            //                return View();
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    this.logger.LogError("Error obteniendo los cursos", ex.ToString());
+            //    return View();
+            //}
 
 
             return View(courseReponse.data);
@@ -59,35 +63,35 @@ namespace School.Web.Controllers
         // GET: CursoController/Details/5
         public ActionResult Details(int id)
         {
-            CourseDetailResponse courseDetailResponse = new CourseDetailResponse();
+            CourseDetailResponse courseDetailResponse = this.courseApiService.GetCourse(id);
 
 
-            try
-            {
-                using (var httpClient = this.httpClientFactory.CreateClient())
-                {
-                    using (var response = httpClient.GetAsync($"{this.baseUrl}/Course/GetCourse?id={ id }").Result)
-                    {
-                        if (response.IsSuccessStatusCode)
-                        {
-                            string apiResponse = response.Content.ReadAsStringAsync().Result;
-                            courseDetailResponse = JsonConvert.DeserializeObject<CourseDetailResponse>(apiResponse);
-                        }
-                        else
-                        {
-                            // realizar x logica //
-                            ViewBag.Message = courseDetailResponse.message;
-                            return View();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
+            //try
+            //{
+            //    using (var httpClient = this.httpClientFactory.CreateClient())
+            //    {
+            //        using (var response = httpClient.GetAsync($"{this.baseUrl}/Course/GetCourse?id={ id }").Result)
+            //        {
+            //            if (response.IsSuccessStatusCode)
+            //            {
+            //                string apiResponse = response.Content.ReadAsStringAsync().Result;
+            //                courseDetailResponse = JsonConvert.DeserializeObject<CourseDetailResponse>(apiResponse);
+            //            }
+            //            else
+            //            {
+            //                // realizar x logica //
+            //                ViewBag.Message = courseDetailResponse.message;
+            //                return View();
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
 
-                this.logger.LogError("Error obteniendo los cursos", ex.ToString());
-                return View();
-            }
+            //    this.logger.LogError("Error obteniendo los cursos", ex.ToString());
+            //    return View();
+            //}
 
             return View(courseDetailResponse.data);
         }
@@ -118,32 +122,32 @@ namespace School.Web.Controllers
         {
             CourseDetailResponse courseDetailResponse = new CourseDetailResponse();
 
-            try
-            {
-                using (var httpClient = this.httpClientFactory.CreateClient())
-                {
-                    using (var response = httpClient.GetAsync($"{this.baseUrl}/Course/GetCourse?id={id}").Result)
-                    {
-                        if (response.IsSuccessStatusCode)
-                        {
-                            string apiResponse = response.Content.ReadAsStringAsync().Result;
-                            courseDetailResponse = JsonConvert.DeserializeObject<CourseDetailResponse>(apiResponse);
-                        }
-                        else
-                        {
-                            // realizar x logica //
-                            ViewBag.Message = courseDetailResponse.message;
-                            return View();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
+            //try
+            //{
+            //    using (var httpClient = this.httpClientFactory.CreateClient())
+            //    {
+            //        using (var response = httpClient.GetAsync($"{this.baseUrl}/Course/GetCourse?id={id}").Result)
+            //        {
+            //            if (response.IsSuccessStatusCode)
+            //            {
+            //                string apiResponse = response.Content.ReadAsStringAsync().Result;
+            //                courseDetailResponse = JsonConvert.DeserializeObject<CourseDetailResponse>(apiResponse);
+            //            }
+            //            else
+            //            {
+            //                // realizar x logica //
+            //                ViewBag.Message = courseDetailResponse.message;
+            //                return View();
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
 
-                this.logger.LogError("Error obteniendo los cursos", ex.ToString());
-                return View();
-            }
+            //    this.logger.LogError("Error obteniendo los cursos", ex.ToString());
+            //    return View();
+            //}
 
             return View(courseDetailResponse.data);
         }

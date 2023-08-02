@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using School.Infrastructure.Context;
 using School.IOC.Dependencies;
+using School.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,11 @@ builder.Services.AddCourseDependency();
 builder.Services.AddDepartmentDependency();
 
 builder.Services.AddHttpClient();
+
+builder.Services.AddTransient<ICourseApiService, CourseApiService>();
+
+
+
 
 var app = builder.Build();
 
